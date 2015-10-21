@@ -25,10 +25,15 @@
           {% endif %}
         {% endif %}
       {% endfor %}
+      
+      {% for page in site.pages_list %}
+      &nbsp;&nbsp;&nbsp;
+      <a class="sidebar-nav-item" href="{{ page[1]  }}">{{ page[0] }}</a>
+      {% endfor %}
 
-      <a class="sidebar-nav-item" href="{{ site.github.repo }}/archive/v{{ site.version }}.zip">Download</a>
+      <!--<a class="sidebar-nav-item" href="{{ site.github.repo }}/archive/v{{ site.version }}.zip">Download</a>
       <a class="sidebar-nav-item" href="{{ site.github.repo }}">GitHub</a>
-      <span class="sidebar-nav-item">Currently v{{ site.version }}</span>
+      <span class="sidebar-nav-item">Currently v{{ site.version }}</span>-->
     </nav>
 
     <p>&copy; {{ site.time | date: '%Y' }}. All rights reserved.</p>
