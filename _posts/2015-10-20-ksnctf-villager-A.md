@@ -1,6 +1,6 @@
 ---
 layout: post
-title: ksnctf Villager A write-up
+title: ksnctf Villager A write-up (Format String Vulnerability)
 comments: true
 ---
 
