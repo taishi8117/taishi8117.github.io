@@ -22,5 +22,5 @@ paginate:         5
 # Custom vars
 version:          2.1.0
 
-github:
-  repo:           https://github.com/taishi8117/taishi8117.github.io
+#github:
+  #repo:           https://github.com/taishi8117/taishi8117.github.io
