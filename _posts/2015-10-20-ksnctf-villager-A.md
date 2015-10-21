@@ -11,7 +11,7 @@ title: ksnctf Villager A write-up
 Using given information, access to the server `ssh -p 10022 q4@ctfq.sweetduet.info`  
 In the server, you can find  
 
-```bash
+```
 [q4@localhost ~]$ ls -al
 total 36
 drwxr-xr-x.  2 root root 4096 May 22  2012 .
@@ -45,7 +45,7 @@ I see. Good bye.
 ### __Analyze__  
 Since I don't have an access to read flag.txt, it seems that I need to somehow exploit q4 (SUID=root) to read the file. Let's disassemble main().  
 
-```asm
+{% highlight assembly %}
 ...
 0x080485e4 <+48>:	call   0x8048484 <fgets@plt>
 0x080485e9 <+53>:	mov    DWORD PTR [esp],0x80487b6
@@ -60,7 +60,7 @@ Since I don't have an access to read flag.txt, it seems that I need to somehow e
 0x0804861a <+102>:	mov    DWORD PTR [esp],0x80487bb
 0x08048621 <+109>:	call   0x80484c4 <puts@plt>
 ...
-```
+{% endhighlight %}
 ```
 (gdb) c
 Continuing.
