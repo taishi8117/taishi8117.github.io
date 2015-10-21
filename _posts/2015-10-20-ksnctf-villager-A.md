@@ -9,7 +9,7 @@ title: ksnctf Villager A write-up
 ## Write-up
 ### __Connect__  
 Using given information, access to the server `ssh -p 10022 q4@ctfq.sweetduet.info`  
-In the server, you can find
+In the server, you can find  
 ```
 [q4@localhost ~]$ ls -al
 total 36
@@ -154,7 +154,7 @@ One possibility to attack this program is by using format string attack to chang
 ### __Exploitation__  
 Remember that ASLR doesn't disable the randomization of memory address of code section. If I can somehow set `eip` to \<main+221\> (0x08048691), I should be able to read `flag.txt`.  
 Right after the format string vulnerability, `putchar@plt` is called, using PLT. That means, if I modify the address referred at `putchar@plt` to \<main+221\>, I can modify `eip`!  
-Let's examine. 
+Let's examine.   
 ```
 ...
 0x08048601 <+77>:	mov    DWORD PTR [esp],0xa
@@ -192,8 +192,8 @@ As examining the format vulnerability, it seems that the input string is stored 
 
 ### __GETTING THE FLAG__
 Now, we got all the informatin needed.
-* modify the value at __0x80499e0__ to __0x8048691__  
-* offset is 6  
++ modify the value at __0x80499e0__ to __0x8048691__  
++ offset is 6  
 
 Some calculation  
 ```python
