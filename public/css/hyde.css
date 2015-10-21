@@ -258,3 +258,7 @@ a.sidebar-nav-item:focus {
 .theme-base-0y .related-posts li a:hover {
   color: #0E4C92;
 }
+
+#disqus_thread {
+  width = 70%;
+}
