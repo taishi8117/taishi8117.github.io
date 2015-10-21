@@ -231,6 +231,7 @@ a.sidebar-nav-item:focus {
   color: #6a9fb5;
 }
 
+
 /* Magenta */
 .theme-base-0e .sidebar {
   background-color: #aa759f;
@@ -247,4 +248,13 @@ a.sidebar-nav-item:focus {
 .theme-base-0f .content a,
 .theme-base-0f .related-posts li a:hover {
   color: #8f5536;
+}
+
+/* Yale Blue */
+.theme-base-0y .sidebar {
+  background-color: #0E4C92;
+}
+.theme-base-0y .content a,
+.theme-base-0y .related-posts li a:hover {
+  color: #0E4C92;
 }
