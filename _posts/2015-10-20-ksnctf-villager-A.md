@@ -7,7 +7,7 @@ title: ksnctf Villager A write-up
 [ksnctf](http://ksnctf.sweetduet.info) is one of the beginner level CTF websites. This article is the write-up for the question 4 [Villager A](http://ksnctf.sweetduet.info/problem/4), in which you need to exploit the *Format String Vulnerability* to capture the flag!  
 
 ### Write-up
-1. *Connect*  
+1. __Connect__  
 Using given information, access to the server `ssh -p 10022 q4@ctfq.sweetduet.info`  
 In the server, you can find
 ```
@@ -41,6 +41,7 @@ no
 I see. Good bye.
 ```
 
+2. __Analyze__  
 Since I don't have an access to read flag.txt, it seems that I need to somehow exploit q4 (SUID=root) to read the file.  
 Let's disassemble.  
 
@@ -117,6 +118,7 @@ It's now clear that there is a format string vulnerability in this program. So, 
 ```
 Realize that 0x1 is moved into [esp+0x418] right before the jump to \<main+205\>. Then, 0x1 is brought back to eax, followed by `jne` at \<main+219\> -- if the value of eax is not 0 (or ZF = 0), it jumps to \<main+102\> that is a loop asking "Do you want the flag?", as shown below.  
 
+
 ```
 ...
 0x0804861a <+102>:	mov    DWORD PTR [esp],0x80487bb
@@ -145,7 +147,11 @@ Realize that 0x1 is moved into [esp+0x418] right before the jump to \<main+205\>
 0x0804867f <+203>:	jmp    0x80486dc <main+296>
 ...
 ```
+
+On the other hand, if the jump was not taken, then it opens `flag.txt` and print it out.  
 One possibility to attack this program is by using format string attack to change the value of [esp+0x418] to 0 before `jne` at \<main+219\>, but it wouldn't work because `mov [esp+0x418], 0x1` happens after the string vulnerability. Moreover, ASLR (Address Space Layout Randomization) is enabled on this system, so guessing the stack address of [esp+0x418] is very hard.  
   
 
-Instead, think about 
+3. __Exploitation__  
+Remember that ASLR doesn't disable the randomization of memory address of code section. If I can somehow set `eip` to \<main+221\> (0x08048691), I should be able to read `flag.txt`.
+
