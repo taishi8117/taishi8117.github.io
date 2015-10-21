@@ -1,11 +1,11 @@
 ---
 layout: page
-title: About
+title: About me
 ---
 
 <p class="message">
-  Hey there! This page is included as an example. Feel free to customize it for your own use upon downloading. Carry on!
+  Hi I'm Taishi. I will be writing some write-ups for CTFs and random programming articles.
 </p>
 
-* [Taishi](https://taishi8117.github.io)
+* [Taishi](https://github.com/taishi8117)
 
