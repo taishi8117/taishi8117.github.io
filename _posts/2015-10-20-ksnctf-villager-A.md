@@ -42,8 +42,7 @@ I see. Good bye.
 ```
 
 ### __Analyze__  
-Since I don't have an access to read flag.txt, it seems that I need to somehow exploit q4 (SUID=root) to read the file.  
-Let's disassemble main().  
+Since I don't have an access to read flag.txt, it seems that I need to somehow exploit q4 (SUID=root) to read the file. Let's disassemble main().  
 
 ```
 ...
