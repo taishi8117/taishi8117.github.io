@@ -60,6 +60,7 @@ Let's disassemble.
 0x08048621 <+109>:	call   0x80484c4 <puts@plt>
 ...
 ```
+```
 (gdb) c
 Continuing.
 What's your name?
