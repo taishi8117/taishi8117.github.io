@@ -74,4 +74,4 @@ hello
 (gdb) x/s $esp+0x18
 0xbf9524d8:	 "hello\n"
 ```
-It seems that at <main+48>, `fgets()` is called to take string from stdin, and at <main+72>, `printf()` is called to output the string.
+It seems that at \<main+48\>, `fgets()` is called to take string from stdin, and at \<main+72\>, `printf()` is called to output the string.
