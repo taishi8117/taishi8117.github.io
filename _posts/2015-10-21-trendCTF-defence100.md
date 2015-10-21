@@ -12,7 +12,7 @@ taishi@sirius:~/trend_ctf|⇒  file vonn
 vonn: ELF 64-bit LSB  executable, x86-64, version 1 (SYSV), dynamically linked (uses shared libs), for GNU/Linux 2.6.24, BuildID[sha1]=7f89c2bb36cc9d0882a4980a99d44a7674fb09e2, not stripped
 ```
 
-Executing that, it seems that if `vonn` is executed on VM.  
+Executing that, it seems to check if `vonn` is executed on VM.  
 
 ```
 taishi@sirius:~/trend_ctf|⇒  ./vonn 
@@ -68,16 +68,16 @@ gdb$ x/s 0x401100
 ```
 
 It seems that `vonn` first checks if the program is run on VM. Then, if it's run on VM, `ldex()` function is called at \<main+360\>. If not, it just exits after printing out "You are on VMM".  
-My instinct is that `ldex()` is responsible for finding the flag. So let's disassemble `ldex()` too.
+My instinct is that `ldex()` is responsible for capturing the flag. So let's disassemble `ldex()` too.
 
 ```
 gdb$ disassemble ldex()
 [...]
 0x0000000000400d82 <+122>:	mov    DWORD PTR [rbp-0xec],eax
 0x0000000000400d88 <+128>:	mov    esi,0x42
-0x0000000000400d8d <+133>:	mov    edi,0x401123			<== "/tmp/...,,,...,,"
+0x0000000000400d8d <+133>:	mov    edi,0x401123
 0x0000000000400d92 <+138>:	mov    eax,0x0
-0x0000000000400d97 <+143>:	call   0x400a90 <open@plt>
+0x0000000000400d97 <+143>:	call   0x400a90 <open@plt> <== creating a temp file
 0x0000000000400d9c <+148>:	mov    DWORD PTR [rbp-0xe8],eax
 0x0000000000400da2 <+154>:	lea    rdx,[rbp-0xd0]
 0x0000000000400da9 <+161>:	mov    eax,DWORD PTR [rbp-0xec]
@@ -106,7 +106,7 @@ gdb$ disassemble ldex()
 0x0000000000400eb1 <+425>:	jns    0x400ed3 <ldex()+459>
 0x0000000000400eb3 <+427>:	jmp    0x400ec9 <ldex()+449>
 0x0000000000400eb5 <+429>:	mov    edi,0x401123
-0x0000000000400eba <+434>:	call   0x4009f0 <unlink@plt>	<== unlink "/tmp/...,,,...,,"
+0x0000000000400eba <+434>:	call   0x4009f0 <unlink@plt>	<== unlink the tmp file
 0x0000000000400ebf <+439>:	mov    edi,0xffffffff
 0x0000000000400ec4 <+444>:	call   0x4009a0 <exit@plt>
 0x0000000000400ec9 <+449>:	mov    edi,0xffffffff
