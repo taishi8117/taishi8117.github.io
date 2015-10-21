@@ -17,10 +17,10 @@ author:
   name:           'Taishi Nojima'
   url:            https://taishi8117.github.io
 
-paginate:         5
+paginate:         2
 
 # Custom vars
 version:          2.1.0
 
-#github:
-  #repo:           https://github.com/taishi8117/taishi8117.github.io
+github:
+  repo:           https://github.com/taishi8117/taishi8117.github.io
