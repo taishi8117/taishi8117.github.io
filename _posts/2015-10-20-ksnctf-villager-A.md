@@ -45,7 +45,7 @@ I see. Good bye.
 ### __Analyze__  
 Since I don't have an access to read flag.txt, it seems that I need to somehow exploit q4 (SUID=root) to read the file. Let's disassemble main().  
 
-{% highlight assembly %}
+{% highlight asm %}
 ...
 0x080485e4 <+48>:	call   0x8048484 <fgets@plt>
 0x080485e9 <+53>:	mov    DWORD PTR [esp],0x80487b6
