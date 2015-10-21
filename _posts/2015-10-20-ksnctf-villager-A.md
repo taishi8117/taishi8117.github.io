@@ -10,7 +10,7 @@ title: ksnctf Villager A write-up
 1. *Connect*  
 Using given information, access to the server `ssh -p 10022 q4@ctfq.sweetduet.info`  
 In the server, you can find
-```bash
+```
 [q4@localhost ~]$ ls -al
 total 36
 drwxr-xr-x.  2 root root 4096 May 22  2012 .
@@ -74,4 +74,16 @@ hello
 (gdb) x/s $esp+0x18
 0xbf9524d8:	 "hello\n"
 ```
-It seems that at \<main+48\>, `fgets()` is called to take string from stdin, and at \<main+72\>, `printf()` is called to output the string.
+It seems that at \<main+48\>, `fgets()` is called to take string from stdin, and at \<main+72\>, `printf()` is called to output the string. But, it's weird that `printf()` was called at \<main+60\> to output "Hi, ", and after that, `putchar()` was called to output "\n", instead of calling something like `printf("Hi, %s\n", input);` as you usually write. Now, I'm getting suspicious that there is a format string vulnerability in this program.  
+What if I input *format string* at \<main+48\>?  
+
+```
+[q4@localhost ~]$ ./q4
+What's your name?
+sirius%x%x%x
+Hi, sirius400d604408
+
+Do you want the flag?
+```
+
+It's now clear that there is a format string vulnerability in this program. So, let's think about how to exploit it to read flag.txt.  
