@@ -6,8 +6,8 @@ title: ksnctf Villager A write-up
 ![placeholder](../image/vil_a.png "Large example image")
 [ksnctf](http://ksnctf.sweetduet.info) is one of the beginner level CTF websites. This article is the write-up for the question 4 [Villager A](http://ksnctf.sweetduet.info/problem/4), in which you need to exploit the *Format String Vulnerability* to capture the flag!  
 
-### Write-up
-1. __Connect__  
+## Write-up
+### __Connect__  
 Using given information, access to the server `ssh -p 10022 q4@ctfq.sweetduet.info`  
 In the server, you can find
 ```
@@ -41,7 +41,7 @@ no
 I see. Good bye.
 ```
 
-2. __Analyze__  
+### __Analyze__  
 Since I don't have an access to read flag.txt, it seems that I need to somehow exploit q4 (SUID=root) to read the file.  
 Let's disassemble.  
 
@@ -152,6 +152,6 @@ On the other hand, if the jump was not taken, then it opens `flag.txt` and print
 One possibility to attack this program is by using format string attack to change the value of [esp+0x418] to 0 before `jne` at \<main+219\>, but it wouldn't work because `mov [esp+0x418], 0x1` happens after the string vulnerability. Moreover, ASLR (Address Space Layout Randomization) is enabled on this system, so guessing the stack address of [esp+0x418] is very hard.  
   
 
-3. __Exploitation__  
+### __Exploitation__  
 Remember that ASLR doesn't disable the randomization of memory address of code section. If I can somehow set `eip` to \<main+221\> (0x08048691), I should be able to read `flag.txt`.
 
