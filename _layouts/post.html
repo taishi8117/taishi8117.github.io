@@ -8,6 +8,7 @@ layout: default
   {{ content }}
   
   {% if page.comments %}
+  <div id="content">
   <div id="disqus_thread">
         <script>
             /**
@@ -32,7 +33,7 @@ layout: default
         <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
 		</div>
         {% endif %}
-		</div>
+		</div></div>
 
 
 
