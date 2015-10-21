@@ -1,7 +1,7 @@
 ---
 layout: post
 title: ksnctf Villager A write-up
-comment: true
+comments: true
 ---
 
 ![placeholder](/image/vil_a.png "Large example image")
