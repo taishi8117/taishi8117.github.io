@@ -68,7 +68,7 @@ gdb$ x/s 0x401100
 0x401100:	"You are on VMM!"
 ```
 
-It seems that `vonn` first checks if the program is run on VM (from <main+24> onwards). Then, if it's run on VM, `ldex()` function is called at \<main+360\>. If not, it just exits after printing out "You are on VMM" message.  
+It seems that `vonn` first checks if the program is run on VM (from \<main+24\> onwards). Then, if it's run on VM, `ldex()` function is called at \<main+360\>. If not, it just exits after printing out "You are on VMM" message.  
 My instinct is that `ldex()` is responsible for capturing the flag. So let's disassemble `ldex()` too.
 
 ```
