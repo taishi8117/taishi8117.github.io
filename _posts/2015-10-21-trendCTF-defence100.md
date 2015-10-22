@@ -12,11 +12,12 @@ taishi@sirius:~/trend_ctf|⇒  file vonn
 vonn: ELF 64-bit LSB  executable, x86-64, version 1 (SYSV), dynamically linked (uses shared libs), for GNU/Linux 2.6.24, BuildID[sha1]=7f89c2bb36cc9d0882a4980a99d44a7674fb09e2, not stripped
 ```
 
-`vonn` seems to check if it is executed on VM.  
+When I run `vonn`, it seems to check if it is executed on VM.  
 
 ```
 taishi@sirius:~/trend_ctf|⇒  ./vonn 
 You are not on VMM
+taishi@sirius:~/trend_ctf|⇒
 ```
 
 I was quite confused because I was running it on virtual machine actually (Parallels). Later as far as I read some other writeups, some people could actually capture the flag just by executing `vonn` on VM. But it didn't happen to me (maybe because I'm using Parallels not VMWare). So I will just write how I found the flag. By the way, Trend Micro is a Japanese anti-virus software company working a lot on VM detection, and I guess that's why VM detection is involved in this problem. Let's disassemble `main`.  
