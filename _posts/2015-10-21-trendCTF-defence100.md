@@ -78,7 +78,7 @@ gdb$ disassemble ldex
 0x00400d88 <+128>:	mov    esi,0x42
 0x00400d8d <+133>:	mov    edi,0x401123			<== "/tmp/...,,,...,,"
 0x00400d92 <+138>:	mov    eax,0x0
-0x00400d97 <+143>:	call   0x400a90 <open@plt>	<== creating /tmp/...,,,...,,
+0x00400d97 <+143>:	call   0x400a90 <open@plt>	<== opening/creating /tmp/...,,,...,,
 0x00400d9c <+148>:	mov    DWORD PTR [rbp-0xe8],eax
 0x00400da2 <+154>:	lea    rdx,[rbp-0xd0]
 0x00400da9 <+161>:	mov    eax,DWORD PTR [rbp-0xec]
