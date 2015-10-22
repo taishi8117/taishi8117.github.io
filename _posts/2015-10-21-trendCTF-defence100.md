@@ -47,7 +47,7 @@ Dump of assembler code for function main:
 0x00400ccf <+322>:	mov    rax,QWORD PTR [rbp-0x18]
 0x00400cd3 <+326>:	cmp    rax,QWORD PTR [rbp-0x8]
 0x00400cd7 <+330>:	je     0x400cfc <main+367>
-0x00400cd9 <+332>:	mov    edi,0x401100		<== "You are not on VMM"
+0x00400cd9 <+332>:	mov    edi,0x401100		<== "You are on VMM!"
 0x00400cde <+337>:	call   0x400990 <puts@plt>
 0x00400ce3 <+342>:	mov    rax,QWORD PTR [rbp-0xd0]
 0x00400cea <+349>:	mov    rax,QWORD PTR [rax]
@@ -55,7 +55,7 @@ Dump of assembler code for function main:
 0x00400cf0 <+355>:	mov    eax,0x0
 0x00400cf5 <+360>:	call   0x400d08 <ldex()>
 0x00400cfa <+365>:	jmp    0x400d06 <main+377>
-0x00400cfc <+367>:	mov    edi,0x401110		<== "You are on VMM!"
+0x00400cfc <+367>:	mov    edi,0x401110		<== "You are not on VMM"
 0x00400d01 <+372>:	call   0x400990 <puts@plt>
 0x00400d06 <+377>:	leave  
 0x00400d07 <+378>:	ret
