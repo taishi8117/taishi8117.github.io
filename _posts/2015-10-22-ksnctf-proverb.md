@@ -43,7 +43,7 @@ Take heed of the snake in the grass.
 ```
 
 Inside, there are three files: `flag.txt` (probably contains FLAG), `proverb` (executable with SUID), and `proverb.txt`. It seems that `proverb` randomly chooses and prints out a line of strings inside `proverb.txt`.  
-Since you can't analyze `proverb` using GDB (no read access), think about using `/tmp` directory, as it was written in readme.txt.  
+Since you can't analyze `proverb` using GDB (no read access), let's think about somehow using `/tmp` directory.  
 
 
 However, although you have a write-permission, you don't have read-permission to `/tmp` directory. Weird. Started suspicious that there might be some files inside `/tmp` that leads you to capture the flag.  
