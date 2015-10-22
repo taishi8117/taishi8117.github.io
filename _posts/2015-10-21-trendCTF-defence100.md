@@ -140,6 +140,7 @@ Now, what I need to do is by using GDB to somehow make the program executes `lde
 ```
 
 That means that if I manually `nexti` relatively slowly from \<main+26\> to \<main+74\> in GDB, the program thinks it's running on VM, thus `ldex()` should be executed.  
+  
 Now, I'm inside `ldex()`. All I need to do is to read `/tmp/...,,,...,,`. Set breakpoint right before `unlink()` (at 0x00400eba).  
 
 ```
