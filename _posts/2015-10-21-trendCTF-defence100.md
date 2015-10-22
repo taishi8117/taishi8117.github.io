@@ -12,14 +12,15 @@ taishi@sirius:~/trend_ctf|⇒  file vonn
 vonn: ELF 64-bit LSB  executable, x86-64, version 1 (SYSV), dynamically linked (uses shared libs), for GNU/Linux 2.6.24, BuildID[sha1]=7f89c2bb36cc9d0882a4980a99d44a7674fb09e2, not stripped
 ```
 
-`vonn` seems to check if it is executed on VM.  
+When I run `vonn`, it seems to check if it is executed on VM.  
 
 ```
 taishi@sirius:~/trend_ctf|⇒  ./vonn 
 You are not on VMM
+taishi@sirius:~/trend_ctf|⇒
 ```
 
-I was quite confused because I was running it on virtual machine actually (Parallels). Later as far as I read some other writeups, some people could actually capture the flag just by executing `vonn` on VM. But it didn't happen to me (maybe because I'm using Parallels not VMWare). So I will just write how I found the flag. By the way, Trend Micro is a Japanese anti-virus software company working a lot on VM detection, and I guess that's why VM detection is involved in this problem. Let's disassemble `main`.  
+I was quite confused because I was running it on virtual machine actually (Parallels). Later, I found out that some other people could actually capture the flag just by executing `vonn` on VM. But it didn't happen to me (maybe because I'm using Parallels not VMWare). By the way, Trend Micro is a Japanese anti-virus software company working a lot on VM detection, and I guess that's why VM detection is involved in this problem. Let's disassemble `main`.  
 
 ```
 gdb$ disassemble
@@ -46,7 +47,7 @@ Dump of assembler code for function main:
 0x00400ccf <+322>:	mov    rax,QWORD PTR [rbp-0x18]
 0x00400cd3 <+326>:	cmp    rax,QWORD PTR [rbp-0x8]
 0x00400cd7 <+330>:	je     0x400cfc <main+367>
-0x00400cd9 <+332>:	mov    edi,0x401100		<== "You are not on VMM"
+0x00400cd9 <+332>:	mov    edi,0x401100		<== "You are on VMM!"
 0x00400cde <+337>:	call   0x400990 <puts@plt>
 0x00400ce3 <+342>:	mov    rax,QWORD PTR [rbp-0xd0]
 0x00400cea <+349>:	mov    rax,QWORD PTR [rax]
@@ -54,7 +55,7 @@ Dump of assembler code for function main:
 0x00400cf0 <+355>:	mov    eax,0x0
 0x00400cf5 <+360>:	call   0x400d08 <ldex()>
 0x00400cfa <+365>:	jmp    0x400d06 <main+377>
-0x00400cfc <+367>:	mov    edi,0x401110		<== "You are on VMM!"
+0x00400cfc <+367>:	mov    edi,0x401110		<== "You are not on VMM"
 0x00400d01 <+372>:	call   0x400990 <puts@plt>
 0x00400d06 <+377>:	leave  
 0x00400d07 <+378>:	ret
@@ -67,7 +68,7 @@ gdb$ x/s 0x401100
 0x401100:	"You are on VMM!"
 ```
 
-It seems that `vonn` first checks if the program is run on VM (from <\main+24> onwards). Then, if it's run on VM, `ldex()` function is called at \<main+360\>. If not, it just exits after printing out "You are on VMM" message.  
+It seems that `vonn` first checks if the program is run on VM (from \<main+24\> onwards). Then, if it's run on VM, `ldex()` function is called at \<main+360\>. If not, it just exits after printing out "You are not on VMM" message.  
 My instinct is that `ldex()` is responsible for capturing the flag. So let's disassemble `ldex()` too.
 
 ```
@@ -139,6 +140,7 @@ Now, what I need to do is by using GDB to somehow make the program executes `lde
 ```
 
 That means that if I manually `nexti` relatively slowly from \<main+26\> to \<main+74\> in GDB, the program thinks it's running on VM, thus `ldex()` should be executed.  
+  
 Now, I'm inside `ldex()`. All I need to do is to read `/tmp/...,,,...,,`. Set breakpoint right before `unlink()` (at 0x00400eba).  
 
 ```
