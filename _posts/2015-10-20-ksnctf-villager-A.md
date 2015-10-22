@@ -8,7 +8,7 @@ comments: true
 
 [ksnctf](http://ksnctf.sweetduet.info) is one of the beginner level CTF websites. This article is the write-up for the question 4 [Villager A](http://ksnctf.sweetduet.info/problem/4), in which you need to exploit the *Format String Vulnerability* to capture the flag!  
 
-__Note that this article includes a complete solution. If you are looking for some hints for Villager A, you should google the keywords like `Format String Vulnerability` and `GOT overwrite`.__  
+__Note that this article includes a complete solution. If you are looking for some hints for Villager A, you should refer to these keywords: `Format String Vulnerability` and `GOT overwrite`.__  
 
 ----------------  
 
