@@ -20,7 +20,7 @@ You are not on VMM
 taishi@sirius:~/trend_ctf|⇒
 ```
 
-I was quite confused because I was running it on virtual machine actually (Parallels). Later, I found out that some other people could actually capture the flag just by executing `vonn` on VM. But it didn't happen to me (maybe because I'm using Parallels not VMWare). By the way, Trend Micro is a Japanese anti-virus software company working a lot on VM detection, and I guess that's why VM detection is involved in this problem. Let's disassemble `main`.  
+I was quite confused because I was running it on virtual machine actually (Parallels). Later, I found out that some other people could actually capture the flag just by executing `vonn` on VM. But it didn't happen to me (maybe because I'm using Parallels not VMWare). Anyways, let's disassemble `main`.  
 
 ```
 gdb$ disassemble
