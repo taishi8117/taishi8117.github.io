@@ -46,7 +46,7 @@ Inside, there are three files: `flag.txt` (probably contains FLAG), `proverb` (e
 Since you can't analyze `proverb` using GDB (no read access), let's think about somehow using `/tmp` directory.  
 
 
-However, although you have a write-permission, you don't have read-permission to `/tmp` directory. Weird. Started suspicious that there might be some files inside `/tmp` that leads you to capture the flag.  
+However, although you have a write-permission, you don't have read-permission to `/tmp` directory.  
 
 
 ```
@@ -54,14 +54,14 @@ However, although you have a write-permission, you don't have read-permission to
 ls: cannot open directory /tmp: Permission denied
 ```
 
-Now, let's start a guessing game.  
+However, there seems to be `proverb.txt` in /tmp as well, saying that you should make a subdirectory.
 
 ```
 [q13@localhost ~]$ cat /tmp/proverb.txt
 Please make your own subdirectory.
 ```
 
-Here you find `proverb.txt`, saying that you should make a subdirectory. Make sense!. Let's create a subdirectory inside /tmp, then make a symbolic link of `~/proverb` and `~/flag.txt` and rename `flag.txt` to `proverb.txt`.  
+Make sense!. Let's create a subdirectory inside /tmp, then make a symbolic link of `~/proverb` and `~/flag.txt` and rename `flag.txt` to `proverb.txt`.  
 
 ```
 [q13@localhost ~]$ mkdir /tmp/my_dir
