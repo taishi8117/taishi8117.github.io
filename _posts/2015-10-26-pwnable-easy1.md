@@ -131,7 +131,7 @@ gdb$ info functions
 All defined functions:
 ```
 
-This implies that some kind of anti-debugging techniques are applied to this program.  
+This implies that some kind of anti-debugging techniques are applied to this program. Let's examine.  
 
 ```
 taishi@sirius:~/blackhat_python/ctf/pwnable.kr|master⚡
@@ -143,7 +143,7 @@ UPX!
 UPX!
 ```
 
-And here we go. `flag` file was packed with UPX. You can easily unpack it (you can download the official UPX packer/unpacker [here](http://upx.sourceforge.net/#downloadupx)).  
+And here we go. `flag` file seems to be packed with UPX. You can easily unpack it using a tool (you can download the official UPX packer/unpacker [here](http://upx.sourceforge.net/#downloadupx)).  
 
 ```
 taishi@sirius:~/blackhat_python/ctf/pwnable.kr|master⚡
