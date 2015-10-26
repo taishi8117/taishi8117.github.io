@@ -24,7 +24,7 @@ dr-xr-xr-x  2 root root 4096 Aug 20  2014 .irssi
 
 It seems that you can read the source code for the program `fd`.
 
-{% highlight C %}
+```C
 char buf[32];
 int main(int argc, char* argv[], char* envp[]){
 	if(argc<2){
@@ -43,6 +43,6 @@ int main(int argc, char* argv[], char* envp[]){
 	return 0;
 
 }
-{% endhighlight %}
+```
 
 So it seems that
