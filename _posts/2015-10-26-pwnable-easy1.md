@@ -6,7 +6,7 @@ comments : true
 
 [pwnable.kr](http://pwnable.kr) has a collection of pwning problems with a wide range of difficulty. This article is the write-up for Toddler's Bottle (easy) section.  
 
-**fd**  (10/26/2015)  
+##fd##  (10/26/2015)  
 
 This is the easiest problem and is about Linux file descriptor. As given, connect to the server `ssh fd@pwnable.kr -p 2222`.  
 
@@ -57,7 +57,7 @@ mommy! I think I know what a file descriptor is!!
 Flag is: __mommy! I think I know what a file descriptor is!!__  
   
 
-**collision** (10/26/2015)  
+##collision## (10/26/2015)  
 Similar to `fd`, you can read the source code for the program `col`.  
 
 ```C
@@ -104,5 +104,5 @@ daddy! I just managed to create a hash collision :)
 Flag is: __daddy! I just managed to create a hash collision :)__  
   
 
-**flag** (10/26/2015)  
+##flag## (10/26/2015)  
 This is a reversing problem.
