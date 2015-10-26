@@ -94,7 +94,7 @@ int main(int argc, char* argv[]){
 }
 ```
 
-At `int *ip = (int*)p`, `const char *p` is casted to `int *`. Since the size of `int` is 4 bytes, the size of `char` is 1 byte and the length of `passcode` is 20 bytes, you can read the flag when the sum of five `int` blocks needs to be `0x21DD09EC`. Since `0x21DD09EC = 0x06C5CEC8 * 4 + 0x06C5CECC` and the system is little-endian, your injection code should be:  
+At `int *ip = (int*)p`, `const char *p` is casted to `int *`. Since the size of `int` is 4 bytes, the size of `char` is 1 byte and the length of `passcode` is 20 bytes, you can read the flag when the sum of five `int` blocks is `0x21DD09EC`. Since `0x21DD09EC = 0x06C5CEC8 * 4 + 0x06C5CECC` and the system is little-endian, your injection code should be:  
 
 ```
 col@ubuntu:~$ ./col $(perl -e 'print "\xc8\xce\xc5\x06"x4 . "\xcc\xce\xc5\x06"')
