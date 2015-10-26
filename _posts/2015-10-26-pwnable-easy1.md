@@ -105,7 +105,7 @@ Flag is: __daddy! I just managed to create a hash collision :)__
   
 
 ##flag (10/26/2015)  
-This is a reversing problem. You can download the file at [here](http://pwnable.kr/bin/flag)  
+This is a reversing problem. You can download the file `flag` [here](http://pwnable.kr/bin/flag).  
 
 
 ```
