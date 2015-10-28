@@ -8,5 +8,5 @@ title: About me
 </p>
 
 * [My Github](https://github.com/taishi8117)
-* [Resume](https://www.dropbox.com/s/553qbomp475yd90/resume_CS.pdf?dl=0)
+* [LinkedIn](https://www.linkedin.com/pub/taishi-nojima/9b/a3/a89)
 
