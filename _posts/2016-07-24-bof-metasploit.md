@@ -61,6 +61,7 @@ Codename: trusty
 
 For the `Makefile`, make sure that if you are compiling in 32-bit mode on a 64-bit machine,
 `CFLAGS=-m32` is turned on, as well as `-fno-stack-protector` and `-z execstac`.
+
 ```Makefile
 CC=gcc
 CFLAGS=-m32 -std=c99 -Wall -fno-stack-protector -z execstack  # for x64
