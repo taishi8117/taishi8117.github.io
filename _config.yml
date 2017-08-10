@@ -10,7 +10,7 @@ title:            Sirius CTF
 tagline:          'CTF'
 description:      'CTF Write-ups and programming'
 url:              http://taishi8117.github.io
-baseurl:          ""
+baseurl:          /
 
 author:
   name:           'Taishi Nojima'
