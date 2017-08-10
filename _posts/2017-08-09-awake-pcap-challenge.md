@@ -70,12 +70,17 @@ Once you decode them as SSL and go through them, you'll realize one weird thing:
 
 If you remember the earlier clue `alert.message`, you'll realize this packet probably has some clue. 
 The packet header says the message length is 308 (or `0x0134` if you prefer hex),
-so I extracted the message part (from the bytestring `50 4b 03` to the end)
+so I extracted the message part (from the bytestring `50 4b 03` to the end, which is
+right after the length header)
 and use [Cyberchef](https://gchq.github.io/CyberChef/) to figure out what it is.
 (`cyberchef.helps` was another clue from mDNS packet.)
 
 When you use [the Detect File Type operation](http://bit.ly/2hNEYae), you'll see that
-this is a zip file! Cool, let's just unzip it --- this is [the unzipped file](http://bit.ly/2hLf1I6) in Cyberchef.
+this is a zip file! 
+
+![placeholder](/image/awake/its_zip.png "It's a zip!")
+
+Cool, let's just unzip it --- this is [the unzipped file](http://bit.ly/2hLf1I6) in Cyberchef.
 
 ![placeholder](/image/awake/unzipped.png "Can you read this?")
 
