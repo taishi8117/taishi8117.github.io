@@ -1,6 +1,6 @@
 ---
 layout : post
-title : Awake Security BlackHat 2017 Soirée PCAP Challenge Write-up | Analyzing a PCAP file in a hard way
+title : Awake Security BlackHat 2017 Soirée PCAP Challenge Write-up - Analyzing a PCAP file in a hard way
 comments : true
 ---
 

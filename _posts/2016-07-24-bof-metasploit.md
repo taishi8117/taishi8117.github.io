@@ -1,6 +1,6 @@
 ---
 layout : post
-title : Exploiting Simple Buffer Overflow (3) | Writing a simple Metasploit module
+title : Exploiting Simple Buffer Overflow (3) - Writing a simple Metasploit module
 comments : true
 ---
 
